@@ -28,7 +28,11 @@ O service é responsável por processar as regras, processar as informações do
 
 PUT e PATCH - O PUT vai definir como os dados irão ficar, ou seja passando exatamente todos os dados do registro do jeito que está estabelecido na tabela. Se eu não passar nenhum dado significa que eu estou excluindo os dados. No caso do PATCH eu vou modificar apenas o dado que quero alterar.
 
-# DTO
+## DTO
 
 Data transfer object é uma forma (padrão de projeto) de transferir dados de um ambiente da aplicação para outro ambiente. É muito comum utilizarmos isso quando recebemos informações do banco de dados e precisamos transferir essas informações para outra parte do código.
 Isso é importante porque conseguimos validar e transformar a estrutura dos dados.
+
+## Validation Pipe
+
+O pipe indica um "tubo" onde o request está passando. O validation pipe é um tubo de validação.
