@@ -81,6 +81,13 @@ export class UserService {
     }
 
     async exists(id: number) {
-        if (!(await this.show(id))) throw new NotFoundException(`The user ${id} does not exists`);
+        if (
+            !(await this.prisma.user.count({
+                where: {
+                    id,
+                },
+            }))
+        )
+            throw new NotFoundException(`The user ${id} does not exists`);
     }
 }
