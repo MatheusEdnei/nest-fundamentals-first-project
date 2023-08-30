@@ -36,3 +36,10 @@ Isso é importante porque conseguimos validar e transformar a estrutura dos dado
 ## Validation Pipe
 
 O pipe indica um "tubo" onde o request está passando. O validation pipe é um tubo de validação.
+
+## Banco de dados
+
+O NestJS já implementa módulos para banco de dados, podendo ser integrado em bancos SQL e NoSQL.
+Para isso podemos usar um ORM (Object Relational Mapping.). O ORM faz a camada de comunicação entre os objetos e classes da nossa linguagem e o banco de dados.
+ORM significa Mapeamento de objeto Relacional e se trata de uma técnica de desenvolvimento utilizada para representar as tabelas ou coleções de um banco de dados com classes e objetos.
+Cada tabela ou coleção terá uma classe que descreve sua estrutura e as intâncias dessa classe ou objetos são os registros.
