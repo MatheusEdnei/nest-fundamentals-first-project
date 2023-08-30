@@ -20,6 +20,15 @@ Divisão de sessões da aplicação, separando a aplicação em módulos. Ele ag
 
 Ele serve como um "meio de campo" para atender a solicitação dos requests dos clientes, sendo amarrado a uma rota especifica. 
 
+## Pipes
+
+Pipes (ou tubos em portugues) são classes com decorator @Injectable() e devem implementar a interface 
+PipeTransform.
+Os pipes normalmente são usados para transformar os dados que passam por eles ou para validá-los.
+
+## Middlewares
+
+Sempre estarão no contexto de chamadas http.
 ## Service
 
 O service é responsável por processar as regras, processar as informações do banco de dados. Por boas práticas, o controller deveria chamar o Service.
