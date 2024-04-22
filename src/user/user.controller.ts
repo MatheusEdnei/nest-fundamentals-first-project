@@ -3,11 +3,10 @@ import {
     Controller,
     Delete,
     Get,
-    Param,
-    ParseIntPipe,
     Patch,
     Post,
     Put,
+    UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -18,8 +17,9 @@ import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import { ParamId } from 'src/decorators/param-id.decorator';
 import { Roles } from 'src/decorators/rules.decorator';
 import { Role } from 'src/enums/role.enum';
-// import { CacheInterceptor } from 'src/interceptors/cache.interceptor';
-
+import { RuleGuard } from 'src/guards/rule.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
+@UseGuards(RuleGuard, AuthGuard)
 @UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {

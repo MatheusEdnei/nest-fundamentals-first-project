@@ -1,10 +1,17 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+    CanActivate,
+    ExecutionContext,
+    Inject,
+    Injectable,
+    forwardRef,
+} from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
+        @Inject(forwardRef() => AuthService)
         private readonly authService: AuthService,
         private readonly userService: UserService,
     ) {}
