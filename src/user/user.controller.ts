@@ -19,7 +19,7 @@ import { Roles } from 'src/decorators/rules.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RuleGuard } from 'src/guards/rule.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
-@UseGuards(RuleGuard, AuthGuard)
+@UseGuards(AuthGuard, RuleGuard)
 @UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {
