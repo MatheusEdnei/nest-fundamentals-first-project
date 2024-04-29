@@ -11,7 +11,7 @@ import { UserService } from 'src/user/user.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
-        @Inject(forwardRef() => AuthService)
+        @Inject(forwardRef(() => AuthService))
         private readonly authService: AuthService,
         private readonly userService: UserService,
     ) {}
