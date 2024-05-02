@@ -8,7 +8,7 @@ export class RuleGuard implements CanActivate {
     constructor(private readonly reflector: Reflector) {}
 
     async canActivate(context: ExecutionContext) {
-        const requeridRoles = this.reflector.getAllAndOverride<Role>(
+        const requeridRoles = this.reflector.getAllAndOverride<Role[]>(
             ROLES_KEY,
             [context.getHandler(), context.getClass()],
         );
@@ -17,7 +17,9 @@ export class RuleGuard implements CanActivate {
             return true;
         }
         const { user } = context.switchToHttp().getRequest();
-        console.log(user);
-        return true;
+
+        const rolesFilted = requeridRoles.filter((role) => role === user.role);
+
+        return rolesFilted.length > 0;
     }
 }
