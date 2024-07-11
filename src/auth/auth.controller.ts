@@ -7,6 +7,9 @@ import {
     UploadedFile,
     BadRequestException,
     UploadedFiles,
+    ParseFilePipe,
+    FileTypeValidator,
+    MaxFileSizeValidator,
 } from '@nestjs/common';
 import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
@@ -87,7 +90,15 @@ export class AuthController {
     @Post('files')
     async uploadFiles(
         @User() user,
-        @UploadedFiles() files: Express.Multer.File[],
+        @UploadedFiles(
+            new ParseFilePipe({
+                validators: [
+                    new FileTypeValidator({ fileType: 'image/*' }),
+                    new MaxFileSizeValidator({ maxSize: 1024 * 20 }),
+                ],
+            }),
+        )
+        files: Express.Multer.File[],
     ) {
         return files;
     }
