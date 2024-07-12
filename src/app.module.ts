@@ -22,10 +22,16 @@ import { MailerModule } from '@nestjs-modules/mailer';
             },
         ]),
         MailerModule.forRoot({
-            transport:
-                'smtps://eliezer.wyman35@ethereal.email:6Ynw6j2zUeFghm8XuD@smtp.ethereal.email',
+            transport: {
+                host: 'smtp.ethereal.email',
+                port: 587,
+                auth: {
+                    user: 'eliezer.wyman35@ethereal.email',
+                    pass: '6Ynw6j2zUeFghm8XuD',
+                },
+            },
             defaults: {
-                from: '"nest-modules" <modules@nestjs.com>',
+                from: '"nest-modules" <eliezer.wyman35@ethereal.email>',
             },
             template: {
                 dir: __dirname + '/templates',
