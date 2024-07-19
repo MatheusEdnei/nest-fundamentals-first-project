@@ -10,6 +10,7 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import * as process from "node:process";
+import { UserEntity } from "./user/entity/user.entity";
 
 @Module({
     imports: [
@@ -50,7 +51,7 @@ import * as process from "node:process";
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
-            entities: [],
+            entities: [UserEntity],
             synchronize: process.env.ENV === 'development',
         }),
     ],
