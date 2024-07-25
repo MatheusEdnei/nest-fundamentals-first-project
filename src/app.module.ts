@@ -8,9 +8,9 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { TypeOrmModule } from "@nestjs/typeorm";
-import * as process from "node:process";
-import { UserEntity } from "./user/entity/user.entity";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as process from 'node:process';
+import { UserEntity } from './user/entity/user.entity';
 
 @Module({
     imports: [
@@ -52,7 +52,7 @@ import { UserEntity } from "./user/entity/user.entity";
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             entities: [UserEntity],
-            synchronize: process.env.ENV === 'development',
+            synchronize: process.env.NODE_ENV === 'development',
         }),
     ],
     controllers: [AppController],
