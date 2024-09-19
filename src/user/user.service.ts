@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
@@ -15,12 +19,20 @@ export class UserService {
     ) {}
 
     async create(data: CreateUserDTO) {
-        data.password = data.password;
+        const existEmail = await this.usersRepository.exist({
+            where: {
+                email: data.email,
+            },
+        });
 
+        if (existEmail) {
+            throw new BadRequestException('Email already exists');
+        }
         const salt = await bcrypt.genSalt();
         data.password = await bcrypt.hash(data.password, salt);
+        const user = this.usersRepository.create(data);
 
-        return this.usersRepository.create({});
+        return await this.usersRepository.save(user);
     }
 
     async list() {
@@ -43,13 +55,14 @@ export class UserService {
         const salt = await bcrypt.genSalt();
         password = await bcrypt.hash(password, salt);
 
-        return await this.usersRepository.update(id, {
+        await this.usersRepository.update(id, {
             email,
             name,
             password,
             birthAt: birthAt ? new Date(birthAt) : null,
             role,
         });
+        return this.show(id);
     }
 
     async updatePartial(
@@ -81,7 +94,8 @@ export class UserService {
             data.role = role;
         }
 
-        return await this.usersRepository.update(id, data);
+        await this.usersRepository.update(id, data);
+        return this.show(id);
     }
 
     async delete(id: number) {
