@@ -2,7 +2,7 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { MailerService } from "@nestjs-modules/mailer";
 import { UserEntity } from "../user/entity/user.entity";
@@ -16,12 +16,12 @@ export class AuthService {
         private readonly userService: UserService,
         private readonly mailer: MailerService,
         @InjectRepository(UserEntity)
-        private usersRepository: Repository<UserEntity>        
+        private usersRepository: Repository<UserEntity>
     ) {}
 
     createToken(user: UserEntity) {
         return {
-            acessToken: this.JwtService.sign({
+            accessToken: this.JwtService.sign({
               id: user.id,
               name: user.name,
               email: user.email,
@@ -30,7 +30,7 @@ export class AuthService {
               expiresIn: '7 days',
               subject: String(user.id),
               issuer: 'login',
-              audience: 'users'  
+              audience: 'users'
           }
           )
         }
@@ -59,11 +59,9 @@ export class AuthService {
     }
 
     async login(email: string, password: string) {
-       
-        const user = await this.usersRepository.findOne({
-            where: {
-                email
-            }
+
+        const user = await this.usersRepository.findOneBy({
+            email
         })
 
         if (!user) {
@@ -104,7 +102,7 @@ export class AuthService {
                 name: user.name,
                 token,
             }
-            
+
         })
         return true;
     }
@@ -115,9 +113,9 @@ export class AuthService {
                 audience: 'users',
                 issuer: 'login',
             });
-            
+
             const id = data.id;
-            
+
             if(isNaN(Number(data.id))) {
                 throw new UnauthorizedException('id or id is not a number');
             }
@@ -128,14 +126,14 @@ export class AuthService {
             await this.usersRepository.update(Number(data.id), {
                 password,
             })
-            
+
             const user = await this.userService.show(Number(data.id));
-            
+
             return this.createToken(user);
         } catch (error) {
             throw new BadRequestException(error);
         }
-        
+
     }
 
     async register(data: AuthRegisterDTO) {
