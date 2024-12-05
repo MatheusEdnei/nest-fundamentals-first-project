@@ -15,10 +15,9 @@ import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { AuthForgetDTO } from './dto/auth-forget.dto';
 import { AuthResetDTO } from './dto/auth-reset.dto';
-import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { User } from 'src/decorators/user.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { User } from '../decorators/user.decorator';
 import {
     FileFieldsInterceptor,
     FileInterceptor,
@@ -26,11 +25,11 @@ import {
 } from '@nestjs/platform-express';
 import { join } from 'path';
 import { FileService } from '../file/file.service';
+import { UserEntity } from '../user/entity/user.entity';
 
 @Controller('auth')
 export class AuthController {
     constructor(
-        private readonly userService: UserService,
         private readonly authService: AuthService,
         private readonly fileService: FileService,
     ) {}
@@ -57,15 +56,15 @@ export class AuthController {
 
     @UseGuards(AuthGuard)
     @Post('me')
-    async me(@User('email') user) {
-        return { user };
+    async me(@User() user: UserEntity) {
+        return user;
     }
 
     @UseInterceptors(FileInterceptor('file'))
     @UseGuards(AuthGuard)
     @Post('photo')
     async uploadPhoto(
-        @User() user,
+        @User() user: UserEntity,
         @UploadedFile() photo: Express.Multer.File,
     ) {
         const path = join(
@@ -83,7 +82,7 @@ export class AuthController {
             throw new BadRequestException(error);
         }
 
-        return { sucess: true };
+        return photo;
     }
     @UseInterceptors(FilesInterceptor('files'))
     @UseGuards(AuthGuard)

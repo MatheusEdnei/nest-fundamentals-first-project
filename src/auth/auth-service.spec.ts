@@ -58,7 +58,7 @@ describe('AuthService', () => {
 
         it('Método forget()', async () => {
             const result = await authService.forget(userEntityList[0].email);
-            expect(result).toEqual(true);
+            expect(result).toEqual({ success: true });
         });
 
         it('Método reset()', async () => {
