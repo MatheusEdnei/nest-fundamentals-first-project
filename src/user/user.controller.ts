@@ -13,12 +13,12 @@ import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
 import { UserService } from './user.service';
-import { LogInterceptor } from 'src/interceptors/log.interceptor';
-import { ParamId } from 'src/decorators/param-id.decorator';
-import { Roles } from 'src/decorators/rules.decorator';
-import { Role } from 'src/enums/role.enum';
-import { RuleGuard } from 'src/guards/rule.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { LogInterceptor } from '../interceptors/log.interceptor';
+import { ParamId } from '../decorators/param-id.decorator';
+import { Roles } from '../decorators/rules.decorator';
+import { Role } from '../enums/role.enum';
+import { RuleGuard } from '../guards/rule.guard';
+import { AuthGuard } from '../guards/auth.guard';
 @Roles(Role.Admin)
 @UseGuards(AuthGuard, RuleGuard)
 @UseInterceptors(LogInterceptor)
@@ -57,6 +57,8 @@ export class UserController {
 
     @Delete(':id')
     async delete(@ParamId() id: number) {
-        return await this.userService.delete(id);
+        return {
+            success: await this.userService.delete(id),
+        };
     }
 }
